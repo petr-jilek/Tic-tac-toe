@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tic_tac_toe.Models;
 using Tic_tac_toe.Models.Enums;
 using Tic_tac_toe.Views.UserControls;
 
@@ -28,6 +29,8 @@ namespace Tic_tac_toe.Views.Pages
 
         private CrossCircle playerOnMove;
 
+        public EventHandler GameOver_Event;
+
         public GamePage(GameType gameType) {
             InitializeComponent();
             this.gameType = gameType;
@@ -42,6 +45,13 @@ namespace Tic_tac_toe.Views.Pages
             GameGridButton gameGridButton = (sender as GameGridButton);
             if (this.Game_Grid[gameGridButton.X, gameGridButton.Y] == CrossCircle.NOTHING) {
                 this.Game_Grid.Play(gameGridButton.X, gameGridButton.Y, this.playerOnMove);
+
+                bool win = this.Game_Grid.CheckWin(this.playerOnMove);
+                if (win) {
+                    GameOver_Event(new GameData(this.playerOnMove, this.gameType), e);
+                }
+
+
                 if (this.playerOnMove == CrossCircle.CIRCLE) this.playerOnMove = CrossCircle.CROSS;
                 else this.playerOnMove = CrossCircle.CIRCLE;
             }
@@ -49,8 +59,6 @@ namespace Tic_tac_toe.Views.Pages
                 MessageBox.Show("Cannot");
             }
         }
-
-
 
     }
 }

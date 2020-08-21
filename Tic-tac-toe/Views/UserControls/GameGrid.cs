@@ -50,8 +50,99 @@ namespace Tic_tac_toe.Views.UserControls
             (this.Children[(x * this.y_count) + y] as GameGridButton).Change(crossCircle);
         }
 
-        private void CheckWin(CrossCircle crossCircle) {            
+        public bool CheckWin(CrossCircle crossCircle) {
+            for (int j = 0; j < y_count; j++) {
+                int success = 0;
+                for (int i = 0; i < x_count; i++) {
+                    if (this[i, j] == crossCircle) {
+                        success++;
+                        if (success == 5) {
+                            return true;
+                        }
+                    }
+                    else {
+                        success = 0;
+                    }
+                }
+            }
 
+            for (int i = 0; i < x_count; i++) {
+                int success = 0;
+                for (int j = 0; j < y_count; j++) {
+                    if (this[i, j] == crossCircle) {
+                        success++;
+                        if (success == 5) {
+                            return true;
+                        }
+                    }
+                    else {
+                        success = 0;
+                    }
+                }
+            }
+
+            for (int i = 0; i < y_count; i++) {
+                int success = 0;
+                for (int j = 0; j < (i + 1); j++) {
+                    if (this[j, y_count - i + j - 1] == crossCircle) {
+                        success++;
+                        if (success == 5) {
+                            return true;
+                        }
+                    }
+                    else {
+                        success = 0;
+                    }
+                }
+            }
+
+            for (int i = 0; i < x_count; i++) {
+                if (i == 0) continue;
+                int success = 0;
+                for (int j = 0; j < (y_count - i); j++) {
+                    if (this[i + j, j] == crossCircle) {
+                        success++;
+                        if (success == 5) {
+                            return true;
+                        }
+                    }
+                    else {
+                        success = 0;
+                    }
+                }
+            }
+
+            for (int i = 0; i < y_count; i++) {
+                int success = 0;
+                for (int j = 0; j < (x_count - i); j++) {
+                    if (this[j, y_count - i - j - 1] == crossCircle) {
+                        success++;
+                        if (success == 5) {
+                            return true;
+                        }
+                    }
+                    else {
+                        success = 0;
+                    }
+                }
+            }
+
+            for (int i = 0; i < x_count; i++) {
+                if (i == 0) continue;
+                int success = 0;
+                for (int j = 0; j < (y_count - i); j++) {
+                    if (this[i + j, y_count - j - 1] == crossCircle) {
+                        success++;
+                        if (success == 5) {
+                            return true;
+                        }
+                    }
+                    else {
+                        success = 0;
+                    }
+                }
+            }
+            return false;
         }
 
         public CrossCircle this[int x, int y] {

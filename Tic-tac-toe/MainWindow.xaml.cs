@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tic_tac_toe.Models;
 using Tic_tac_toe.Models.Enums;
 using Tic_tac_toe.Views.Pages;
 
@@ -36,9 +37,23 @@ namespace Tic_tac_toe
             this.Page_Grid.Children.Add(page);
         }
 
+        private void WelcomePage(object sender, EventArgs e) {
+            this.welcomePage.FirstRender();
+            RenderPage(this.welcomePage);
+        }
+
         private void StartGame(object sender, EventArgs e) {
             this.gamePage = new GamePage((GameType)sender);
+            this.gamePage.GameOver_Event += GameOver;
             this.RenderPage(gamePage);
+        }
+
+        private void GameOver(object sender, EventArgs e) {
+            GameData gameData = sender as GameData;
+            GameOverPage gameOverPage = new GameOverPage(gameData);
+            gameOverPage.PlayAgain_Button_Click_Event += StartGame;
+            gameOverPage.Return_Button_Click_Event += WelcomePage;
+            this.RenderPage(gameOverPage);
         }
 
 

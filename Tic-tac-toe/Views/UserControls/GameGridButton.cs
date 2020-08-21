@@ -15,7 +15,6 @@ namespace Tic_tac_toe.Views.UserControls
 
         public CrossCircle CrossCircle { get => this.crossCircle; private set { } }
 
-
         public GameGridButton(int x_corrd, int y_corrd) {
             this.x_corrd = x_corrd;
             this.y_corrd = y_corrd;

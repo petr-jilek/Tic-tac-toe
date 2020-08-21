@@ -43,7 +43,7 @@ namespace Tic_tac_toe.Views.Pages
             TwoPlayers_Normal_Button.Click += TwoPlayers_Normal_Button_Click;
             TwoPlayers_Lan_Button.Click += TwoPlayers_Lan_Button_Click;
 
-            this.RenderButtons(OnePlayer_Button, TwoPlayers_Button);
+            FirstRender();
         }
 
         private void RenderButtons(params Button[] buttons) {
@@ -51,6 +51,10 @@ namespace Tic_tac_toe.Views.Pages
             foreach (Button but in buttons) {
                 this.Button_StackPanel.Children.Add(but);
             }
+        }
+
+        public void FirstRender() {
+            this.RenderButtons(OnePlayer_Button, TwoPlayers_Button);
         }
 
         private void OnePlayer_Button_Click(object sender, RoutedEventArgs e) {
