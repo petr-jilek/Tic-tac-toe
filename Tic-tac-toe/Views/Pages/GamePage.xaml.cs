@@ -23,66 +23,94 @@ namespace Tic_tac_toe.Views.Pages
     /// </summary>
     public partial class GamePage : UserControl
     {
-        private GameGrid Game_Grid;
+        private readonly GameData gameData;
 
-        private readonly GameType gameType;
+        private GameGrid Game_Grid;
 
         private CrossCircle playerOnMove;
 
         public EventHandler GameOver_Event;
 
-        public GamePage(GameType gameType) {
+        public GamePage(GameData gameData) {
             InitializeComponent();
-            this.gameType = gameType;
-            this.Game_Grid = new GameGrid(30, 30);
-            this.Game_Grid.GridButton_Click_Event += Play;
-            this.Game_Content_Grid.Children.Clear();
-            this.Game_Content_Grid.Children.Add(Game_Grid);
-            this.playerOnMove = CrossCircle.CIRCLE;
+            this.gameData = gameData;
+            CreateGameGrid();
         }
-
-        // Play again
-        public void PlayAgain() {
-            this.Game_Grid = new GameGrid(30, 30);
+        public void CreateGameGrid() {
+            switch (this.gameData.mapSize) {
+                case MapSize.SMALL:
+                this.Game_Grid = new GameGrid(10, 10);
+                break;
+                case MapSize.MEDIUM:
+                this.Game_Grid = new GameGrid(20, 20);
+                break;
+                case MapSize.BIG:
+                this.Game_Grid = new GameGrid(30, 30);
+                break;
+                case MapSize.HUGE:
+                this.Game_Grid = new GameGrid(50, 50);
+                break;
+            }
             this.Game_Grid.GridButton_Click_Event += Play;
             this.Game_Content_Grid.Children.Clear();
             this.Game_Content_Grid.Children.Add(Game_Grid);
             this.playerOnMove = CrossCircle.CIRCLE;
+
+            if (this.gameData.player == CrossCircle.CROSS) {
+                AIPlay();
+                SwichPlayer();
+            }
         }
 
         private void Play(object sender, EventArgs e) {
             GameGridButton gameGridButton = (sender as GameGridButton);
+
             if (this.Game_Grid[gameGridButton.X, gameGridButton.Y] == CrossCircle.NOTHING) {
                 this.Game_Grid.Play(gameGridButton.X, gameGridButton.Y, this.playerOnMove);
-
-                bool win = this.Game_Grid.CheckWin(this.playerOnMove);
-                if (win) {
-                    GameOver_Event(new GameData(this.playerOnMove, this.gameType), e);
-                    return;
-                }
-
-                if (this.playerOnMove == CrossCircle.CIRCLE) this.playerOnMove = CrossCircle.CROSS;
-                else this.playerOnMove = CrossCircle.CIRCLE;
-
-
+                CheckWin(sender, e);
                 if (this.playerOnMove == CrossCircle.CROSS) {
-                    AIPlayer aIPlayer = new AIPlayer(Game_Grid.CloneGameTable(), this.gameType, CrossCircle.CROSS);
+                    this.gameData.rounds++;
+                }
+                SwichPlayer();
 
-                    (int x, int y) = aIPlayer.ReturnCorrds();
-                    this.Game_Grid.Play(x, y, aIPlayer.IAm);
-
-                    bool winAI = this.Game_Grid.CheckWin(this.playerOnMove);
-                    if (winAI) {
-                        GameOver_Event(new GameData(this.playerOnMove, this.gameType), e);
-                        return;
-                    }
-
-                    this.playerOnMove = CrossCircle.CIRCLE;
+                if (this.gameData.gameType == GameType.ONE_PLAYER_EASY ||
+                    this.gameData.gameType == GameType.ONE_PLAYER_MEDIUM ||
+                    this.gameData.gameType == GameType.ONE_PLAYER_HARD) {
+                    AIPlay();
+                    CheckWin(sender, e);
+                    SwichPlayer();
+                    this.gameData.rounds++;
                 }
             }
             else {
                 MessageBox.Show("Cannot");
             }
+        }
+
+        private void CheckWin(object sender, EventArgs e) {
+            bool win = this.Game_Grid.CheckWin(this.playerOnMove);
+            if (win) {
+                this.gameData.winner = this.playerOnMove;
+                GameOver_Event(this.gameData, e);
+                return;
+            }
+        }
+
+        private void SwichPlayer() {
+            if (this.playerOnMove == CrossCircle.CIRCLE) this.playerOnMove = CrossCircle.CROSS;
+            else this.playerOnMove = CrossCircle.CIRCLE;
+        }
+
+        private void AIPlay() {
+            AIPlayer aIPlayer;
+            if (this.gameData.player == CrossCircle.CIRCLE) {
+                aIPlayer = new AIPlayer(Game_Grid.CloneGameTable(), this.gameData, CrossCircle.CROSS);
+            }
+            else {
+                aIPlayer = new AIPlayer(Game_Grid.CloneGameTable(), this.gameData, CrossCircle.CIRCLE);
+            }
+            (int x, int y) = aIPlayer.ReturnCorrds();
+            this.Game_Grid.Play(x, y, aIPlayer.IAm);
         }
 
     }

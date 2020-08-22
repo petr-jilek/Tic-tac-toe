@@ -33,7 +33,7 @@ namespace Tic_tac_toe.Views.UserControls
             }
             for (int i = 0; i < x_count; i++) {
                 for (int j = 0; j < y_count; j++) {
-                    GameGridButton Grid_Button = new GameGridButton(i, j);
+                    GameGridButton Grid_Button = new GameGridButton(i, j);                    
                     Grid_Button.Click += GridButton_Click;
                     Grid.SetColumn(Grid_Button, i);
                     Grid.SetRow(Grid_Button, j);

@@ -19,7 +19,7 @@ namespace Tic_tac_toe.Models
         private int leftCroop;
         private int rightCroop;
 
-        private readonly GameType gameType;
+        private readonly GameData gameData;
 
         private readonly CrossCircle iAm;
 
@@ -28,9 +28,9 @@ namespace Tic_tac_toe.Models
         private int selectedCroppedX;
         private int selectedCroppedY;
 
-        public AIPlayer(GameTable gameTable, GameType gameType, CrossCircle iAm) {
+        public AIPlayer(GameTable gameTable, GameData gameData, CrossCircle iAm) {
             this.gameTable = gameTable;
-            this.gameType = gameType;
+            this.gameData = gameData;
             this.iAm = iAm;
         }
 
@@ -111,7 +111,11 @@ namespace Tic_tac_toe.Models
         }
 
         private void SelectCroppedCords() {
-            if (croppedTable.X_count <= 3 && croppedTable.Y_count <= 3) {
+            if (croppedTable.X_count < 0) {
+                selectedCroppedX = -1 * leftCroop / 2;
+                selectedCroppedY = -1 * upCroop / 2;
+            }
+            else if (croppedTable.X_count <= 3 && croppedTable.Y_count <= 3) {
                 Random random = new Random();
                 int x = random.Next(croppedTable.X_count);
                 int y = random.Next(croppedTable.Y_count);

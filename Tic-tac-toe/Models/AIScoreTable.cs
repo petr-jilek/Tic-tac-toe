@@ -179,6 +179,13 @@ namespace Tic_tac_toe.Models
                         success++;
                     }
                     else {
+                        if (x + (i * dx) == this.gameTable.X_count || y + (i * dy) == this.gameTable.Y_count ||
+                            x + (i * dx) < 0 || y + (i * dy) < 0) {
+                            if (success == 4) {
+                                success = success * success;
+                            }
+                            break;
+                        }
                         if (this.gameTable[x + (i * dx), y + (i * dy)] == firstTouched) {
                             success++;
                         }

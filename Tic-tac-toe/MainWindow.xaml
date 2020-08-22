@@ -3,20 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Tic_tac_toe"
+        xmlns:local="clr-namespace:Tic_tac_toe"        
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="550" Width="750">
 
-    <Grid>
+    <Grid Name="Main_Grid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40px"/>
+            <RowDefinition Height="50px"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <Grid Name="Result_Grid" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Panel.ZIndex="10">
+        </Grid>
+
         <Grid Grid.Row="0" Background="#111">
-            <Button x:Name="PlayAgain_Button" HorizontalAlignment="Left" Click="PlayAgain_Button_Click">Again
-            </Button>
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="#fff">Tic-tac-toe</TextBlock>
+            <StackPanel Name="Information_StackPanel" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 10 0" Visibility="Hidden">
+                <TextBlock Foreground="#fff" Text="Round: "></TextBlock>
+                <TextBlock Name="Round_TextBlock" Foreground="#fff" FontWeight="Bold"></TextBlock>
+                <StackPanel Width="10"></StackPanel>
+                <TextBlock Foreground="#fff" Text="On move: "></TextBlock>
+                <TextBlock Name="OnMove_TextBlock" Foreground="#fff" FontWeight="Bold"></TextBlock>
+            </StackPanel>
+
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="20px" Foreground="#fff">Tic-tac-toe</TextBlock>
+
+            <StackPanel Name="BackButtons_StackPanel" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10 0 10 0" Visibility="Hidden">
+                <Button Name="BackMainMenu_Button" Click="BackMainMenu_Button_Click" Padding="20 6 20 6" BorderThickness="0.2" Foreground="#fff" FontWeight="Bold" Background="#14BDAC">Again</Button>
+                <StackPanel Width="10"></StackPanel>
+                <Button Name="BackAgain_Button" Click="PlayAgain_Button_Click" Padding="20 6 20 6" BorderThickness="0.2" Foreground="#fff" FontWeight="Bold" Background="#14BDAC">Main menu</Button>
+            </StackPanel>
         </Grid>
 
         <Grid Name="Page_Grid" Grid.Row="1">

@@ -9,15 +9,16 @@ namespace Tic_tac_toe.Models
 {
     public class GameData
     {
-        private CrossCircle player;
-        private GameType gameType;
+        public GameType gameType;
+        public MapSize mapSize;
+        public CrossCircle player;
 
-        public CrossCircle Player { get => this.player; private set { } }
-        public GameType GameType { get => this.gameType; private set { } }
+        public int rounds;
+        public CrossCircle winner;
 
-        public GameData(CrossCircle player, GameType gameType) {
-            this.player = player;
+        public GameData(GameType gameType) {
             this.gameType = gameType;
+            rounds = 0;
         }
 
     }

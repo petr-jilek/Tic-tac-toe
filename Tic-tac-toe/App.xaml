@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:Tic_tac_toe"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+
     </Application.Resources>
 </Application>

@@ -59,12 +59,10 @@
     <Compile Include="Models\AIScoreTable.cs" />
     <Compile Include="Models\Enums\CrossCircle.cs" />
     <Compile Include="Models\Enums\GameType.cs" />
+    <Compile Include="Models\Enums\MapSize.cs" />
     <Compile Include="Models\GameData.cs" />
     <Compile Include="Models\GameTable.cs" />
     <Compile Include="Static\DeepClone.cs" />
-    <Compile Include="Views\Pages\GameOverPage.xaml.cs">
-      <DependentUpon>GameOverPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Pages\GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
@@ -85,10 +83,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Pages\GameOverPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Pages\GamePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -126,7 +120,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Views\Styles\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

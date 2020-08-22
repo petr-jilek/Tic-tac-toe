@@ -1,4 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using Tic_tac_toe.Models.Enums;
 
 namespace Tic_tac_toe.Views.UserControls
@@ -22,6 +26,8 @@ namespace Tic_tac_toe.Views.UserControls
             Grid.SetRow(this, this.y_corrd);
             this.crossCircle = CrossCircle.NOTHING;
             SetContent();
+            this.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            this.IsEnabledChanged += GameOver;
         }
 
         private void SetContent() {
@@ -31,11 +37,16 @@ namespace Tic_tac_toe.Views.UserControls
                 break;
                 case CrossCircle.CROSS:
                 this.Content = "X";
+                this.Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
                 break;
                 case CrossCircle.CIRCLE:
                 this.Content = "O";
+                this.Background = new SolidColorBrush(Color.FromRgb(20, 189, 172));
                 break;
             }
+            this.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            this.FontWeight = FontWeights.Bold;
+            this.BorderThickness = new Thickness(0.2, 0.2, 0.2, 0.2);
         }
 
         public void Change(CrossCircle crossCircle) {
@@ -43,6 +54,15 @@ namespace Tic_tac_toe.Views.UserControls
                 this.crossCircle = crossCircle;
             }
             SetContent();
+        }
+
+        private void GameOver(object sender, DependencyPropertyChangedEventArgs e) {
+            if (this.crossCircle == CrossCircle.CIRCLE) {
+                this.Foreground = new SolidColorBrush(Color.FromRgb(20, 189, 172));
+            }
+            else {
+                this.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+            }
         }
 
     }
