@@ -23,15 +23,18 @@ namespace Tic_tac_toe.Models
 
         private readonly CrossCircle iAm;
 
+        private readonly GameType gameType;
+
         public CrossCircle IAm { get => this.iAm; private set { } }
 
         private int selectedCroppedX;
         private int selectedCroppedY;
 
-        public AIPlayer(GameTable gameTable, GameData gameData, CrossCircle iAm) {
+        public AIPlayer(GameTable gameTable, GameData gameData, CrossCircle iAm, GameType gameType) {
             this.gameTable = gameTable;
             this.gameData = gameData;
             this.iAm = iAm;
+            this.gameType = gameType;
         }
 
         public (int, int) ReturnCorrds() {
@@ -135,7 +138,7 @@ namespace Tic_tac_toe.Models
                 }
             }
             else {
-                AIScoreTable aIScoreTable = new AIScoreTable(this.croppedTable, iAm);
+                AIScoreTable aIScoreTable = new AIScoreTable(this.croppedTable, iAm, gameType);
                 (selectedCroppedX, selectedCroppedY) = aIScoreTable.GetCoords();
             }
         }

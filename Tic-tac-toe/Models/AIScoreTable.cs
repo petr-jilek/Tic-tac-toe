@@ -15,9 +15,12 @@ namespace Tic_tac_toe.Models
 
         private CrossCircle iAm;
 
-        public AIScoreTable(GameTable gameTable, CrossCircle iAm) {
+        private GameType gameType;
+
+        public AIScoreTable(GameTable gameTable, CrossCircle iAm, GameType gameType) {
             this.gameTable = gameTable;
             this.iAm = iAm;
+            this.gameType = gameType;
             SetFirstPoints();
         }
 
@@ -56,15 +59,22 @@ namespace Tic_tac_toe.Models
                 for (int j = 0; j < this.gameTable.Y_count; j++) {
                     if (this[i, j] == -1) {
                         List<(int, int)> directions = this.GetDirections(i, j);
-                        (int sum, List<(int, CrossCircle, bool)> successFirstTouchedBlocked) = GetPoints(i, j, directions);
-                        this[i, j] = ReturnScore(sum, successFirstTouchedBlocked, directions);
-
+                        if (this.gameType == GameType.ONE_PLAYER_EASY) {
+                            this[i, j] = ReturnScoreEasy(i, j, directions);
+                        }
+                        else if (this.gameType == GameType.ONE_PLAYER_MEDIUM) {
+                            this[i, j] = ReturnScoreMedium(i, j, directions);
+                        }
+                        else {
+                            (int sum, List<(int, CrossCircle, bool)> successFirstTouchedBlocked) = GetPoints(i, j, directions);
+                            this[i, j] = ReturnScoreHard(sum, successFirstTouchedBlocked, directions);
+                        }
                     }
                 }
             }
         }
 
-        private int ReturnScore(int sum, List<(int, CrossCircle, bool)> successFirstTouchedBlocked, List<(int, int)> directions) {
+        private int ReturnScoreHard(int sum, List<(int, CrossCircle, bool)> successFirstTouchedBlocked, List<(int, int)> directions) {
             if (directions.Count == 0) {
                 return 0;
             }
@@ -279,7 +289,7 @@ namespace Tic_tac_toe.Models
                                     if (score >= 4) {
                                         finalScore = BigInfinity;
                                     }
-                                    else if(score >= 3) {
+                                    else if (score >= 3) {
                                         finalScore = BigSmallInfinity;
                                     }
                                     else {
@@ -508,6 +518,92 @@ namespace Tic_tac_toe.Models
             }
 
             return (sum, successFirstTouchedBlocked);
+        }
+
+        private int ReturnScoreMedium(int x, int y, List<(int, int)> directions) {
+            if (directions.Count == 0) {
+                return 0;
+            }
+
+            int sum = 0;
+            for (int d = 0; d < directions.Count; d++) {
+                (int dx, int dy) = directions[d];
+                CrossCircle firstTouched = CrossCircle.NOTHING;
+                int success = 0;
+                int i = 1;
+                while (true) {
+                    if (i == 1) {
+                        firstTouched = this.gameTable[x + dx, y + dy];
+                        success++;
+                    }
+                    else {
+                        if (x + (i * dx) == this.gameTable.X_count || y + (i * dy) == this.gameTable.Y_count ||
+                            x + (i * dx) < 0 || y + (i * dy) < 0) {
+                            if (success == 4) {
+                                success = success * success;
+                            }
+                            break;
+                        }
+                        if (this.gameTable[x + (i * dx), y + (i * dy)] == firstTouched) {
+                            success++;
+                        }
+                        else {
+                            if (this.gameTable[x + (i * dx), y + (i * dy)] == CrossCircle.NOTHING) {
+                                success = success * success;
+                            }
+                            else {
+                                if (success == 4) {
+                                    success = success * success;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    i++;
+                }
+                sum += success;
+            }
+
+            return sum;
+        }
+
+        private int ReturnScoreEasy(int x, int y, List<(int, int)> directions) {
+            if (directions.Count == 0) {
+                return 0;
+            }
+
+            int sum = 0;
+            for (int d = 0; d < directions.Count; d++) {
+                (int dx, int dy) = directions[d];
+                CrossCircle firstTouched = CrossCircle.NOTHING;
+                int success = 0;
+                int i = 1;
+                while (true) {
+                    if (i == 1) {
+                        firstTouched = this.gameTable[x + dx, y + dy];
+                        success++;
+                    }
+                    else {
+                        if (this.gameTable[x + (i * dx), y + (i * dy)] == firstTouched) {
+                            success++;
+                        }
+                        else {
+                            if (this.gameTable[x + (i * dx), y + (i * dy)] == CrossCircle.NOTHING) {                                
+                            }
+                            else {
+                                if (success == 4) {
+                                    success = success * success;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    i++;
+                }
+                sum += success;
+            }
+
+            return sum;
         }
 
 

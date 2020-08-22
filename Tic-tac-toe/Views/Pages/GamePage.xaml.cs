@@ -65,7 +65,7 @@ namespace Tic_tac_toe.Views.Pages
             }
         }
 
-        public void SendMessage() {           
+        public void SendMessage() {
             string message = this.gameData.rounds.ToString() + ";";
             if (this.playerOnMove == CrossCircle.CIRCLE) {
                 message += "(O)";
@@ -84,6 +84,7 @@ namespace Tic_tac_toe.Views.Pages
                 this.Game_Grid.Play(gameGridButton.X, gameGridButton.Y, this.playerOnMove);
                 CheckWin(sender, e);
                 if (this.playerOnMove == CrossCircle.CROSS) {
+                    CheckDraw();
                     this.gameData.rounds++;
                 }
                 SwichPlayer();
@@ -95,9 +96,10 @@ namespace Tic_tac_toe.Views.Pages
                     AIPlay();
                     CheckWin(sender, e);
                     if (this.playerOnMove == CrossCircle.CROSS) {
+                        CheckDraw();
                         this.gameData.rounds++;
                     }
-                    SwichPlayer();                  
+                    SwichPlayer();
                     SendMessage();
                 }
             }
@@ -117,20 +119,58 @@ namespace Tic_tac_toe.Views.Pages
 
         private void SwichPlayer() {
             if (this.playerOnMove == CrossCircle.CIRCLE) {
-                this.playerOnMove = CrossCircle.CROSS;              
+                this.playerOnMove = CrossCircle.CROSS;
             }
             else {
-                this.playerOnMove = CrossCircle.CIRCLE;               
-            }           
+                this.playerOnMove = CrossCircle.CIRCLE;
+            }
+        }
+
+        private void CheckDraw() {
+            EventArgs e = new EventArgs();
+            if (this.gameData.mapSize == MapSize.SMALL) {
+                if (((this.gameData.rounds * 2)) == (10 * 10)) {
+                    this.gameData.winner = CrossCircle.NOTHING;
+                    GameOver_Event(this.gameData, e);
+                    return;
+                }
+            }
+            else if (this.gameData.mapSize == MapSize.MEDIUM) {
+                if (this.gameData.mapSize == MapSize.SMALL) {
+                    if (((this.gameData.rounds * 2)) == (20 * 20)) {
+                        this.gameData.winner = CrossCircle.NOTHING;
+                        GameOver_Event(this.gameData, e);
+                        return;
+                    }
+                }
+            }
+            else if (this.gameData.mapSize == MapSize.BIG) {
+                if (this.gameData.mapSize == MapSize.SMALL) {
+                    if (((this.gameData.rounds * 2)) == (30 * 30)) {
+                        this.gameData.winner = CrossCircle.NOTHING;
+                        GameOver_Event(this.gameData, e);
+                        return;
+                    }
+                }
+            }
+            else {
+                if (this.gameData.mapSize == MapSize.SMALL) {
+                    if (((this.gameData.rounds * 2)) == (50 * 50)) {
+                        this.gameData.winner = CrossCircle.NOTHING;
+                        GameOver_Event(this.gameData, e);
+                        return;
+                    }
+                }
+            }
         }
 
         private void AIPlay() {
             AIPlayer aIPlayer;
             if (this.gameData.player == CrossCircle.CIRCLE) {
-                aIPlayer = new AIPlayer(Game_Grid.CloneGameTable(), this.gameData, CrossCircle.CROSS);
+                aIPlayer = new AIPlayer(Game_Grid.CloneGameTable(), this.gameData, CrossCircle.CROSS, this.gameData.gameType);
             }
             else {
-                aIPlayer = new AIPlayer(Game_Grid.CloneGameTable(), this.gameData, CrossCircle.CIRCLE);
+                aIPlayer = new AIPlayer(Game_Grid.CloneGameTable(), this.gameData, CrossCircle.CIRCLE, this.gameData.gameType);
             }
             (int x, int y) = aIPlayer.ReturnCorrds();
             this.Game_Grid.Play(x, y, aIPlayer.IAm);
