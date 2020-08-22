@@ -29,6 +29,7 @@ namespace Tic_tac_toe.Views.Pages
 
         private CrossCircle playerOnMove;
 
+        public EventHandler EditInformation_Event;
         public EventHandler GameOver_Event;
 
         public GamePage(GameData gameData) {
@@ -54,12 +55,26 @@ namespace Tic_tac_toe.Views.Pages
             this.Game_Grid.GridButton_Click_Event += Play;
             this.Game_Content_Grid.Children.Clear();
             this.Game_Content_Grid.Children.Add(Game_Grid);
+
             this.playerOnMove = CrossCircle.CIRCLE;
+            this.gameData.rounds = 1;
 
             if (this.gameData.player == CrossCircle.CROSS) {
                 AIPlay();
                 SwichPlayer();
             }
+        }
+
+        public void SendMessage() {           
+            string message = this.gameData.rounds.ToString() + ";";
+            if (this.playerOnMove == CrossCircle.CIRCLE) {
+                message += "(O)";
+            }
+            else {
+                message += "(X)";
+            }
+            EventArgs e = new EventArgs();
+            this.EditInformation_Event(message, e);
         }
 
         private void Play(object sender, EventArgs e) {
@@ -72,14 +87,18 @@ namespace Tic_tac_toe.Views.Pages
                     this.gameData.rounds++;
                 }
                 SwichPlayer();
+                SendMessage();
 
                 if (this.gameData.gameType == GameType.ONE_PLAYER_EASY ||
                     this.gameData.gameType == GameType.ONE_PLAYER_MEDIUM ||
                     this.gameData.gameType == GameType.ONE_PLAYER_HARD) {
                     AIPlay();
                     CheckWin(sender, e);
-                    SwichPlayer();
-                    this.gameData.rounds++;
+                    if (this.playerOnMove == CrossCircle.CROSS) {
+                        this.gameData.rounds++;
+                    }
+                    SwichPlayer();                  
+                    SendMessage();
                 }
             }
             else {
@@ -97,8 +116,12 @@ namespace Tic_tac_toe.Views.Pages
         }
 
         private void SwichPlayer() {
-            if (this.playerOnMove == CrossCircle.CIRCLE) this.playerOnMove = CrossCircle.CROSS;
-            else this.playerOnMove = CrossCircle.CIRCLE;
+            if (this.playerOnMove == CrossCircle.CIRCLE) {
+                this.playerOnMove = CrossCircle.CROSS;              
+            }
+            else {
+                this.playerOnMove = CrossCircle.CIRCLE;               
+            }           
         }
 
         private void AIPlay() {

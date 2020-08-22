@@ -13,10 +13,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Name="Result_Grid" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Panel.ZIndex="10">
-        </Grid>
+        <Grid Name="Result_Grid" HorizontalAlignment="Center" VerticalAlignment="Center" Panel.ZIndex="10" Grid.RowSpan="2"/>
 
-        <Grid Grid.Row="0" Background="#111">
+        <Grid Grid.Row="0" Background="#111" Grid.ColumnSpan="2" Margin="0,0,0,0.4">
             <StackPanel Name="Information_StackPanel" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 10 0" Visibility="Hidden">
                 <TextBlock Foreground="#fff" Text="Round: "></TextBlock>
                 <TextBlock Name="Round_TextBlock" Foreground="#fff" FontWeight="Bold"></TextBlock>
@@ -28,13 +27,12 @@
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="20px" Foreground="#fff">Tic-tac-toe</TextBlock>
 
             <StackPanel Name="BackButtons_StackPanel" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10 0 10 0" Visibility="Hidden">
-                <Button Name="BackMainMenu_Button" Click="BackMainMenu_Button_Click" Padding="20 6 20 6" BorderThickness="0.2" Foreground="#fff" FontWeight="Bold" Background="#14BDAC">Again</Button>
+                <Button Click="PlayAgain_Button_Click" Padding="20 6 20 6" BorderThickness="0.2" Foreground="#fff" FontWeight="Bold" Background="#14BDAC">Again</Button>
                 <StackPanel Width="10"></StackPanel>
-                <Button Name="BackAgain_Button" Click="PlayAgain_Button_Click" Padding="20 6 20 6" BorderThickness="0.2" Foreground="#fff" FontWeight="Bold" Background="#14BDAC">Main menu</Button>
+                <Button Click="BackMainMenu_Button_Click" Padding="20 6 20 6" BorderThickness="0.2" Foreground="#fff" FontWeight="Bold" Background="#14BDAC">Main menu</Button>
             </StackPanel>
         </Grid>
 
-        <Grid Name="Page_Grid" Grid.Row="1">
-        </Grid>
+        <Grid Name="Page_Grid" Grid.Row="1"/>
     </Grid>
 </Window>

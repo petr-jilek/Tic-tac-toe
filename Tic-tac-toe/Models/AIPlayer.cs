@@ -138,7 +138,6 @@ namespace Tic_tac_toe.Models
                 AIScoreTable aIScoreTable = new AIScoreTable(this.croppedTable);
                 (selectedCroppedX, selectedCroppedY) = aIScoreTable.GetCoords();
             }
-            int a = 0;
         }
 
     }

@@ -38,6 +38,8 @@ namespace Tic_tac_toe
         }
 
         private void WelcomePage(object sender, EventArgs e) {
+            this.Information_StackPanel.Visibility = Visibility.Hidden;
+            this.BackButtons_StackPanel.Visibility = Visibility.Hidden;
             this.Page_Grid.IsEnabled = true;
             this.Result_Grid.Children.Clear();
             this.welcomePage.FirstRender();
@@ -46,8 +48,12 @@ namespace Tic_tac_toe
 
         private void StartGame(object sender, EventArgs e) {
             this.gamePage = new GamePage((GameData)sender);
+            this.gamePage.EditInformation_Event = EditInformation;
             this.gamePage.GameOver_Event += GameOver;
+            this.Information_StackPanel.Visibility = Visibility.Visible;
+            this.BackButtons_StackPanel.Visibility = Visibility.Visible;
             this.RenderPage(gamePage);
+            this.gamePage.SendMessage();
         }
 
         private void GameOver(object sender, EventArgs e) {
@@ -57,20 +63,49 @@ namespace Tic_tac_toe
             GameOver_StackPanel.Orientation = Orientation.Vertical;
             GameOver_StackPanel.HorizontalAlignment = HorizontalAlignment.Center;
             GameOver_StackPanel.VerticalAlignment = VerticalAlignment.Center;
-            TextBlock Result_TextBlock = new TextBlock() { };
-            switch (gameData.winner) {
-                case CrossCircle.CIRCLE:
-                Result_TextBlock.Text = "First player (O) won";
-                break;
-                case CrossCircle.CROSS:
-                Result_TextBlock.Text = "Second player (X) won";
-                break;
-                case CrossCircle.NOTHING:
-                Result_TextBlock.Text = "Draw";
-                break;
+            TextBlock Result_TextBlock = new TextBlock() {
+                FontWeight = FontWeights.Bold,
+                FontSize = 20,
+                HorizontalAlignment = HorizontalAlignment.Center,
+            };
+            if (gameData.gameType == GameType.ONE_PLAYER_EASY ||
+                gameData.gameType == GameType.ONE_PLAYER_MEDIUM ||
+                gameData.gameType == GameType.ONE_PLAYER_HARD) {
+                if (gameData.winner == gameData.player) {
+                    Result_TextBlock.Text = "Victory";
+                }
+                else {
+                    Result_TextBlock.Text = "Game over";
+                }
             }
-            Button Again_Button = new Button() { Content = "Again" };
-            Button MainMenu_Button = new Button() { Content = "Main Menu" };
+            else {
+                switch (gameData.winner) {
+                    case CrossCircle.CIRCLE:
+                    Result_TextBlock.Text = "First player (O) won";
+                    break;
+                    case CrossCircle.CROSS:
+                    Result_TextBlock.Text = "Second player (X) won";
+                    break;
+                    case CrossCircle.NOTHING:
+                    Result_TextBlock.Text = "Draw";
+                    break;
+                }
+            }
+            Button Again_Button = new Button() {
+                Content = "Again",
+                Padding = new Thickness(30, 8, 30, 8),
+                Background = new SolidColorBrush(Color.FromRgb(20, 189, 172)),
+                Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
+                FontWeight = FontWeights.Bold,
+                BorderThickness = new Thickness(0.2, 0.2, 0.2, 0.2), };
+            Button MainMenu_Button = new Button() {
+                Content = "MainMenu",
+                Padding = new Thickness(30, 8, 30, 8),
+                Background = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
+                FontWeight = FontWeights.Bold,
+                BorderThickness = new Thickness(0.2, 0.2, 0.2, 0.2), };
+            Again_Button.Click += PlayAgain_Button_Click;
             MainMenu_Button.Click += WelcomePage;
             GameOver_StackPanel.Children.Clear();
             GameOver_StackPanel.Children.Add(Result_TextBlock);
@@ -82,11 +117,22 @@ namespace Tic_tac_toe
         }
 
         private void PlayAgain_Button_Click(object sender, RoutedEventArgs e) {
+            this.Page_Grid.IsEnabled = true;
+            this.Result_Grid.Children.Clear();
             this.gamePage.CreateGameGrid();
+            this.gamePage.SendMessage();
         }
 
         private void BackMainMenu_Button_Click(object sender, RoutedEventArgs e) {
             WelcomePage(sender, e);
         }
+
+        private void EditInformation(object sender, EventArgs e) {
+            string message = sender as string;
+            string[] splitted = message.Split(';');
+            Round_TextBlock.Text = splitted[0];
+            OnMove_TextBlock.Text = splitted[1];
+        }
+
     }
 }
