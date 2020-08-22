@@ -13,8 +13,11 @@ namespace Tic_tac_toe.Models
 
         private List<int> points = new List<int>();
 
-        public AIScoreTable(GameTable gameTable) {
+        private CrossCircle iAm;
+
+        public AIScoreTable(GameTable gameTable, CrossCircle iAm) {
             this.gameTable = gameTable;
+            this.iAm = iAm;
             SetFirstPoints();
         }
 
@@ -181,9 +184,25 @@ namespace Tic_tac_toe.Models
                     else {
                         if (x + (i * dx) == this.gameTable.X_count || y + (i * dy) == this.gameTable.Y_count ||
                             x + (i * dx) < 0 || y + (i * dy) < 0) {
-                            if (success == 4) {
-                                success = success * success;
+                            //Is Blocked
+                            if (success == 1) {
+
                             }
+                            else if (success == 2) {
+
+                            }
+                            else if (success == 3) {
+
+                            }
+                            else if (success == 4) {
+                                if (firstTouched == iAm) {
+                                    success = 2000;
+                                }
+                                else {
+                                    success = 1999;
+                                }
+                            }
+                            //END Is Blocked
                             break;
                         }
                         if (this.gameTable[x + (i * dx), y + (i * dy)] == firstTouched) {
@@ -191,12 +210,52 @@ namespace Tic_tac_toe.Models
                         }
                         else {
                             if (this.gameTable[x + (i * dx), y + (i * dy)] == CrossCircle.NOTHING) {
-                                success = success * success;
+                                //Not Blocked
+                                if (success == 1) {
+                                    success = success * 2;
+                                }
+                                else if (success == 2) {
+                                    success = success * 2;
+                                }
+                                else if (success == 3) {
+                                    if (firstTouched == iAm) {
+                                        success = 1900;
+                                    }
+                                    else {
+                                        success = 1899;
+                                    }
+
+                                }
+                                else if (success == 4) {
+                                    if (firstTouched == iAm) {
+                                        success = 2000;
+                                    }
+                                    else {
+                                        success = 1999;
+                                    }
+                                }
+                                //END Not Blocked
                             }
                             else {
-                                if (success == 4) {
-                                    success = success * success;
+                                //Is Blocked
+                                if (success == 1) {
+
                                 }
+                                else if (success == 2) {
+
+                                }
+                                else if (success == 3) {
+
+                                }
+                                else if (success == 4) {
+                                    if (firstTouched == iAm) {
+                                        success = 2000;
+                                    }
+                                    else {
+                                        success = 1999;
+                                    }
+                                }
+                                //END Is Blocked
                             }
                             break;
                         }
