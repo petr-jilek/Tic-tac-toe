@@ -166,7 +166,40 @@ namespace Tic_tac_toe.Models
             if (directions.Count == 0) {
                 return 0;
             }
-            else return 1;
+
+            int sum = 0;
+            for (int d = 0; d < directions.Count; d++) {
+                (int dx, int dy) = directions[d];
+                CrossCircle firstTouched = CrossCircle.NOTHING;
+                int success = 0;
+                int i = 1;
+                while (true) {
+                    if (i == 1) {
+                        firstTouched = this.gameTable[x + dx, y + dy];
+                        success++;
+                    }
+                    else {
+                        if (this.gameTable[x + (i * dx), y + (i * dy)] == firstTouched) {
+                            success++;
+                        }
+                        else {
+                            if (this.gameTable[x + (i * dx), y + (i * dy)] == CrossCircle.NOTHING) {
+                                success = success * success;
+                            }
+                            else {
+                                if (success == 4) {
+                                    success = success * success;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    i++;
+                }
+                sum += success;
+            }
+
+            return sum;
         }
 
 

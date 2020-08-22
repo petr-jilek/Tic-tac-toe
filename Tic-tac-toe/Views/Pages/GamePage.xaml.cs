@@ -34,7 +34,7 @@ namespace Tic_tac_toe.Views.Pages
         public GamePage(GameType gameType) {
             InitializeComponent();
             this.gameType = gameType;
-            this.Game_Grid = new GameGrid(10, 10);
+            this.Game_Grid = new GameGrid(30, 30);
             this.Game_Grid.GridButton_Click_Event += Play;
             this.Game_Content_Grid.Children.Clear();
             this.Game_Content_Grid.Children.Add(Game_Grid);
@@ -43,7 +43,7 @@ namespace Tic_tac_toe.Views.Pages
 
         // Play again
         public void PlayAgain() {
-            this.Game_Grid = new GameGrid(10, 10);
+            this.Game_Grid = new GameGrid(30, 30);
             this.Game_Grid.GridButton_Click_Event += Play;
             this.Game_Content_Grid.Children.Clear();
             this.Game_Content_Grid.Children.Add(Game_Grid);

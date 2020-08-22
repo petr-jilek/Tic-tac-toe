@@ -111,7 +111,7 @@ namespace Tic_tac_toe.Models
         }
 
         private void SelectCroppedCords() {
-            /*if (croppedTable.X_count <= 3 && croppedTable.Y_count <= 3) {
+            if (croppedTable.X_count <= 3 && croppedTable.Y_count <= 3) {
                 Random random = new Random();
                 int x = random.Next(croppedTable.X_count);
                 int y = random.Next(croppedTable.Y_count);
@@ -129,16 +129,12 @@ namespace Tic_tac_toe.Models
                         }
                     }
                 }
-            }*/
-            // else {
-            //}
-
-            AIScoreTable aIScoreTable = new AIScoreTable(this.croppedTable);
-            (selectedCroppedX, selectedCroppedY) = aIScoreTable.GetCoords();
-
-
+            }
+            else {
+                AIScoreTable aIScoreTable = new AIScoreTable(this.croppedTable);
+                (selectedCroppedX, selectedCroppedY) = aIScoreTable.GetCoords();
+            }
             int a = 0;
-
         }
 
     }
