@@ -56,6 +56,8 @@ namespace Tic_tac_toe
             this.RenderPage(gameOverPage);
         }
 
-
+        private void PlayAgain_Button_Click(object sender, RoutedEventArgs e) {
+            this.gamePage.PlayAgain();
+        }
     }
 }

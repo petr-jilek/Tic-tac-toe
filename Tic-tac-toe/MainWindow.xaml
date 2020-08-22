@@ -14,6 +14,8 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Background="#111">
+            <Button x:Name="PlayAgain_Button" HorizontalAlignment="Left" Click="PlayAgain_Button_Click">Again
+            </Button>
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="#fff">Tic-tac-toe</TextBlock>
         </Grid>
 

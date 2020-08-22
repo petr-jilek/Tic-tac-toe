@@ -55,9 +55,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\AIPlayer.cs" />
+    <Compile Include="Models\AIScoreTable.cs" />
     <Compile Include="Models\Enums\CrossCircle.cs" />
     <Compile Include="Models\Enums\GameType.cs" />
     <Compile Include="Models\GameData.cs" />
+    <Compile Include="Models\GameTable.cs" />
+    <Compile Include="Static\DeepClone.cs" />
     <Compile Include="Views\Pages\GameOverPage.xaml.cs">
       <DependentUpon>GameOverPage.xaml</DependentUpon>
     </Compile>
