@@ -56,10 +56,304 @@ namespace Tic_tac_toe.Models
                 for (int j = 0; j < this.gameTable.Y_count; j++) {
                     if (this[i, j] == -1) {
                         List<(int, int)> directions = this.GetDirections(i, j);
-                        this[i, j] = GetPoints(i, j, directions);
+                        (int sum, List<(int, CrossCircle, bool)> successFirstTouchedBlocked) = GetPoints(i, j, directions);
+                        this[i, j] = ReturnScore(sum, successFirstTouchedBlocked, directions);
+
                     }
                 }
             }
+        }
+
+        private int ReturnScore(int sum, List<(int, CrossCircle, bool)> successFirstTouchedBlocked, List<(int, int)> directions) {
+            if (directions.Count == 0) {
+                return 0;
+            }
+
+            int finalSum = 0;
+            for (int i = 0; i < successFirstTouchedBlocked.Count; i++) {
+                (int score, CrossCircle touched, bool blocked) = successFirstTouchedBlocked[i];
+                int scoreOposite = 0;
+                CrossCircle touchedOposite = CrossCircle.NOTHING;
+                bool blockedOposite = false;
+                bool haveOposite = false;
+                (int dx, int dy) = directions[i];
+
+                for (int d = 0; d < directions.Count; d++) {
+                    (int dxC, int dyC) = directions[d];
+                    if ((dx + dxC == 0) && (dy + dyC == 0)) {
+                        haveOposite = true;
+                        (scoreOposite, touchedOposite, blockedOposite) = successFirstTouchedBlocked[d];
+                        break;
+                    }
+                }
+
+                int finalScore = 0;
+
+                const int BigInfinity = 1000000;
+                const int SmallInfinity = 100000;
+                const int BigSmallInfinity = 10000;
+                const int SmallSmallInfinity = 1000;
+
+                if (haveOposite) {
+                    if (touched == touchedOposite) {
+                        if (blocked) {
+                            if (blockedOposite) {
+                                if (touched == iAm) {
+                                    //haveOposite, same, blocked, blockedOposite, iAm
+                                    if ((score + scoreOposite) >= 4) {
+                                        finalScore = BigInfinity;
+                                    }
+                                    else {
+                                        finalScore = 0;
+                                    }
+
+                                }
+                                else {
+                                    //haveOposite, same, blocked, blockedOposite, not iAm
+                                    if ((score + scoreOposite) >= 4) {
+                                        finalScore = SmallInfinity;
+                                    }
+                                    else {
+                                        finalScore = 0;
+                                    }
+                                }
+                            }
+                            else {
+                                if (touched == iAm) {
+                                    //haveOposite, same, blocked, not blockedOposite, iAm
+                                    if ((score + scoreOposite) >= 4) {
+                                        finalScore = BigInfinity;
+                                    }
+                                    else {
+                                        finalScore = score + scoreOposite;
+                                    }
+                                }
+                                else {
+                                    //haveOposite, same, blocked, not blockedOposite, not iAm
+                                    if ((score + scoreOposite) >= 4) {
+                                        finalScore = SmallInfinity;
+                                    }
+                                    else {
+                                        finalScore = score + scoreOposite;
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            if (blockedOposite) {
+                                if (touched == iAm) {
+                                    //haveOposite, same, not blocked, blockedOposite, iAm
+                                    if ((score + scoreOposite) >= 4) {
+                                        finalScore = BigInfinity;
+                                    }
+                                    else {
+                                        finalScore = score + scoreOposite;
+                                    }
+                                }
+                                else {
+                                    //haveOposite, same, not blocked, blockedOposite, not iAm
+                                    if ((score + scoreOposite) >= 4) {
+                                        finalScore = SmallInfinity;
+                                    }
+                                    else {
+                                        finalScore = score + scoreOposite;
+                                    }
+                                }
+                            }
+                            else {
+                                if (touched == iAm) {
+                                    //haveOposite, same, not blocked, not blockedOposite, iAm
+                                    if ((score + scoreOposite) >= 4) {
+                                        finalScore = BigInfinity;
+                                    }
+                                    else {
+                                        finalScore = (score + scoreOposite) * (score + scoreOposite);
+                                    }
+                                }
+                                else {
+                                    //haveOposite, same, not blocked, not blockedOposite, not iAm
+                                    if ((score + scoreOposite) >= 4) {
+                                        finalScore = SmallInfinity;
+                                    }
+                                    else {
+                                        finalScore = (score + scoreOposite) * (score + scoreOposite);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        if (blocked) {
+                            if (blockedOposite) {
+                                if (touched == iAm) {
+                                    //haveOposite, not same, blocked, blockedOposite, iAm
+                                    if (score >= 4) {
+                                        finalScore = BigInfinity;
+                                    }
+                                    else if (scoreOposite >= 4) {
+                                        finalScore = SmallInfinity;
+                                    }
+                                    else {
+                                        finalScore = score * score;
+                                    }
+                                }
+                                else {
+                                    //haveOposite, not same, blocked, blockedOposite, not iAm
+                                    if (score >= 4) {
+                                        finalScore = SmallInfinity;
+                                    }
+                                    else if (scoreOposite >= 4) {
+                                        finalScore = BigInfinity;
+                                    }
+                                    else {
+                                        finalScore = score * score;
+                                    }
+                                }
+                            }
+                            else {
+                                if (touched == iAm) {
+                                    //haveOposite, not same, blocked, not blockedOposite, iAm
+                                    if (score >= 4) {
+                                        finalScore = BigInfinity;
+                                    }
+                                    else if (scoreOposite >= 4) {
+                                        finalScore = SmallInfinity;
+                                    }
+                                    else {
+                                        finalScore = 0;
+                                    }
+                                }
+                                else {
+                                    //haveOposite, not same, blocked, not blockedOposite, not iAm
+                                    if (score >= 4) {
+                                        finalScore = BigInfinity;
+                                    }
+                                    else if (scoreOposite >= 4) {
+                                        finalScore = SmallInfinity;
+                                    }
+                                    else if (scoreOposite >= 3) {
+                                        finalScore = SmallSmallInfinity;
+                                    }
+                                    else {
+                                        finalScore = score;
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            if (blockedOposite) {
+                                if (touched == iAm) {
+                                    //haveOposite, not same, not blocked, blockedOposite, iAm
+                                    if (score >= 4) {
+                                        finalScore = BigInfinity;
+                                    }
+                                    else if (scoreOposite >= 4) {
+                                        finalScore = SmallInfinity;
+                                    }
+                                    else if (score >= 3) {
+                                        finalScore = BigSmallInfinity;
+                                    }
+                                    else {
+                                        finalScore = score * score;
+                                    }
+                                }
+                                else {
+                                    //haveOposite, not same, not blocked, blockedOposite, not iAm
+                                    if (score >= 4) {
+                                        finalScore = SmallInfinity;
+                                    }
+                                    else if (scoreOposite >= 4) {
+                                        finalScore = BigInfinity;
+                                    }
+                                    else if (score >= 3) {
+                                        finalScore = SmallSmallInfinity;
+                                    }
+                                    else {
+                                        finalScore = score * score;
+                                    }
+                                }
+                            }
+                            else {
+                                if (touched == iAm) {
+                                    //haveOposite, not same, not blocked, not blockedOposite, iAm
+                                    if (score >= 4) {
+                                        finalScore = BigInfinity;
+                                    }
+                                    else if(score >= 3) {
+                                        finalScore = BigSmallInfinity;
+                                    }
+                                    else {
+                                        finalScore = score * score;
+                                    }
+                                }
+                                else {
+                                    //haveOposite, not same, not blocked, not blockedOposite, not iAm
+                                    if (score >= 4) {
+                                        finalScore = SmallInfinity;
+                                    }
+                                    else if (score >= 3) {
+                                        finalScore = SmallSmallInfinity;
+                                    }
+                                    else {
+                                        finalScore = score * score;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (blocked) {
+                        if (touched == iAm) {
+                            //not haveOposite, blocked, iAm
+                            if (score >= 4) {
+                                finalScore = BigInfinity;
+                            }
+                            else {
+                                finalScore = score;
+                            }
+                        }
+                        else {
+                            //not haveOposite, blocked, not iAm
+                            if (score >= 4) {
+                                finalScore = SmallInfinity;
+                            }
+                            else {
+                                finalScore = score;
+                            }
+                        }
+                    }
+                    else {
+                        if (touched == iAm) {
+                            //not haveOposite, not blocked, iAm
+                            if (score >= 4) {
+                                finalScore = BigInfinity;
+                            }
+                            else if (score >= 3) {
+                                finalScore = BigSmallInfinity;
+                            }
+                            else {
+                                finalScore = score * score;
+                            }
+                        }
+                        else {
+                            //not haveOposite, not blocked, not iAm
+                            if (score >= 4) {
+                                finalScore = SmallInfinity;
+                            }
+                            else if (score >= 3) {
+                                finalScore = SmallSmallInfinity;
+                            }
+                            else {
+                                finalScore = score * score;
+                            }
+                        }
+                    }
+                }
+                finalSum += finalScore;
+            }
+
+            return finalSum;
         }
 
         private List<(int, int)> GetDirections(int x, int y) {
@@ -165,10 +459,12 @@ namespace Tic_tac_toe.Models
             return directions;
         }
 
-        private int GetPoints(int x, int y, List<(int, int)> directions) {
+        private (int, List<(int, CrossCircle, bool)>) GetPoints(int x, int y, List<(int, int)> directions) {
             if (directions.Count == 0) {
-                return 0;
+                return (0, null);
             }
+
+            List<(int, CrossCircle, bool)> successFirstTouchedBlocked = new List<(int, CrossCircle, bool)>();
 
             int sum = 0;
             for (int d = 0; d < directions.Count; d++) {
@@ -185,23 +481,7 @@ namespace Tic_tac_toe.Models
                         if (x + (i * dx) == this.gameTable.X_count || y + (i * dy) == this.gameTable.Y_count ||
                             x + (i * dx) < 0 || y + (i * dy) < 0) {
                             //Is Blocked
-                            if (success == 1) {
-
-                            }
-                            else if (success == 2) {
-
-                            }
-                            else if (success == 3) {
-
-                            }
-                            else if (success == 4) {
-                                if (firstTouched == iAm) {
-                                    success = 2000;
-                                }
-                                else {
-                                    success = 1999;
-                                }
-                            }
+                            successFirstTouchedBlocked.Add((success, firstTouched, true));
                             //END Is Blocked
                             break;
                         }
@@ -211,50 +491,12 @@ namespace Tic_tac_toe.Models
                         else {
                             if (this.gameTable[x + (i * dx), y + (i * dy)] == CrossCircle.NOTHING) {
                                 //Not Blocked
-                                if (success == 1) {
-                                    success = success * 2;
-                                }
-                                else if (success == 2) {
-                                    success = success * 2;
-                                }
-                                else if (success == 3) {
-                                    if (firstTouched == iAm) {
-                                        success = 1900;
-                                    }
-                                    else {
-                                        success = 1899;
-                                    }
-
-                                }
-                                else if (success == 4) {
-                                    if (firstTouched == iAm) {
-                                        success = 2000;
-                                    }
-                                    else {
-                                        success = 1999;
-                                    }
-                                }
+                                successFirstTouchedBlocked.Add((success, firstTouched, false));
                                 //END Not Blocked
                             }
                             else {
                                 //Is Blocked
-                                if (success == 1) {
-
-                                }
-                                else if (success == 2) {
-
-                                }
-                                else if (success == 3) {
-
-                                }
-                                else if (success == 4) {
-                                    if (firstTouched == iAm) {
-                                        success = 2000;
-                                    }
-                                    else {
-                                        success = 1999;
-                                    }
-                                }
+                                successFirstTouchedBlocked.Add((success, firstTouched, true));
                                 //END Is Blocked
                             }
                             break;
@@ -265,7 +507,7 @@ namespace Tic_tac_toe.Models
                 sum += success;
             }
 
-            return sum;
+            return (sum, successFirstTouchedBlocked);
         }
 
 
