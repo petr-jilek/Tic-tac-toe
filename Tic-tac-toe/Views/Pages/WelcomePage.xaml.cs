@@ -25,6 +25,7 @@ namespace Tic_tac_toe.Views.Pages
         private GameData gameData;
 
         public EventHandler StartGame_Event;
+        //public EventHandler LanGame_Event;
 
         private readonly Button OnePlayer_Button = new Button() {
             Name = "one", Content = "1 Player",
@@ -173,7 +174,7 @@ namespace Tic_tac_toe.Views.Pages
                 RenderButtons(true, OnePlayer_Easy_Button, OnePlayer_Medium_Button, OnePlayer_Hard_Button);
                 break;
                 case "two":
-                RenderButtons(true, TwoPlayers_Normal_Button, TwoPlayers_Lan_Button);
+                RenderButtons(true, TwoPlayers_Normal_Button);
                 break;
                 case "easy":
                 this.gameData = new GameData(GameType.ONE_PLAYER_EASY);
@@ -191,10 +192,10 @@ namespace Tic_tac_toe.Views.Pages
                 this.gameData = new GameData(GameType.TWO_PLAYERS_NORMAL);
                 RenderButtons(true, SizeSmall_Button, SizeMedium_Button, SizeBig_Button, SizeHuge_Button);
                 break;
-                case "lan":
+               /* case "lan":
                 this.gameData = new GameData(GameType.TWO_PLAYERS_LAN);
-                RenderButtons(true, SizeSmall_Button, SizeMedium_Button, SizeBig_Button, SizeHuge_Button);
-                break;
+                LanGame_Event(sender, e);
+                break;*/
                 case "ssmall":
                 this.gameData.mapSize = MapSize.SMALL;
                 StartOrRenderXO(sender, e);

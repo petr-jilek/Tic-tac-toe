@@ -29,6 +29,7 @@ namespace Tic_tac_toe
         public MainWindow() {
             InitializeComponent();
             this.welcomePage.StartGame_Event = StartGame;
+           //this.welcomePage.LanGame_Event = LanGame;
             this.RenderPage(welcomePage);
         }
 
@@ -133,6 +134,13 @@ namespace Tic_tac_toe
             Round_TextBlock.Text = splitted[0];
             OnMove_TextBlock.Text = splitted[1];
         }
+
+        /*
+        private void LanGame(object sender, EventArgs e) {
+            LanPage lanPage = new LanPage();
+            RenderPage(lanPage);
+        }
+        */
 
     }
 }
